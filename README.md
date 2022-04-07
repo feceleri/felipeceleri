@@ -1,4 +1,4 @@
-# Sistema de Eventos
+# Site Pessoal
 
 <!---Esses são exemplos. Veja https://shields.io para outras pessoas ou para personalizar este conjunto de escudos. Você pode querer incluir dependências, status do projeto e informações de licença aqui--->
 
@@ -8,24 +8,15 @@
 ![Github All Contributors](https://img.shields.io/github/license/feceleri/felipeceleri?style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/feceleri/felipeceleri?style=for-the-badge)
 
-<img src="https://i.imgur.com/dbA85Qz.gif" alt="exemplo imagem">
+<img src="https://felipeceleri.com.br/site_img.png" alt="site">
 
-> Esse é o meu site pessoal, não há nada demais nele porém por meio dele é possível chegar aos meus projetos do Github, ao meu perfil no Linkedin e a alguns artigos que pretendo escrever no medium...
+> Esse é o meu site pessoal, não há nada demais nele, porém, por meio dele é possível chegar aos meus projetos do Github, ao meu perfil no Linkedin e a alguns artigos que pretendo escrever no medium...
 
 ### Ajustes e melhorias
 
-O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
+O projeto está em constante desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
-- [ ] Criar cadastro de eventos integrando com a agenda de eventos do portal
-- [ ] Integrar cadastro e login usuários com o E-Cat
-- [ ] Criar modulo de gerenciamento de ministrantes (cadastro, avaliação, etc...) 
-- [ ] Criar esquema de verificação de presença para eventos presenciais
-- [ ] Area de relatórios e dashboard de BI
-- [ ] Efetuar o cancelamento de inscrição, individual e em massa
-- [ ] Envio de confirmação/informação para usuário (Inscreveu/Cancelou/Alterou a Data)
-- [ ] Cadastro de Certificados e relacionamento com o evento.
-- [ ] Autentificação de Certificados (QR-Code).
-
+- [ ] Criar area de divulgação de portfolios
 
 ## 🤝 Colaboradores
 
@@ -41,7 +32,6 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
     </td>   
   </tr>
 </table>
-
 
 ## 📝 Licença
 
