@@ -1,7 +1,6 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $cep = $_POST['cep'];
-
+    $cep = $_POST['inputCEP'];
     $viaCep =  file_get_contents('https://viacep.com.br/ws/' . $cep . '/json/');
     $json = json_decode($viaCep);
     $place = str_replace(" ", "+", urlencode($json->logradouro)) . "+-+" . str_replace(" ", "+", urlencode($json->bairro)) . "," . urlencode($json->localidade) . "," . $cep;
@@ -213,6 +212,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     "cep": $("#inputCEP").val()
                 };
                 if (postData) {
+                    
                     jQuery.ajax({
                         type: "POST",
                         data: postData,
@@ -231,14 +231,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 'section': 'sundata'
                             }
 
-                            jQuery.ajax({
-                                type: "POST",
-                                url: 'http://www.cresesb.cepel.br/index.php',
-                                data: newData,
-                                success: function(data) {
-                                    $("#resultado").text(data);
-                                }
-                            });
+                            fetch("http://www.cresesb.cepel.br/index.php", {
+  "headers": {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+    "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+    "cache-control": "no-cache",
+    "content-type": "application/x-www-form-urlencoded",
+    "pragma": "no-cache",
+    "upgrade-insecure-requests": "1"
+  },
+  "referrer": "http://www.cresesb.cepel.br/index.php",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "body": "latitude_dec=23.672282804231&latitude=-23.672282804231&hemi_lat=0&longitude_dec=46.66260761907&longitude=-46.66260761907&formato=1&lang=pt&section=sundata",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+})
+  .then(res => res.text())
+  .then(    $("#resultado").text(res))
+
+
+                            // jQuery.ajax({
+                            //     type: "POST",
+                            //     url: 'http://www.cresesb.cepel.br/index.php',
+                            //     data: newData,
+                            //     beforeSend: function(request) {
+                            //         request.withCredentials = false;
+                            //     },
+                            //     success: function(data) {
+                            //         $("#resultado").text(data);
+                            //     }
+                            // });
                         }
                     });
                 }
