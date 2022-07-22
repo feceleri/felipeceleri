@@ -22,7 +22,7 @@ window.onload = function() {
     const botao = document.createElement("button");
     botao.setAttribute('id', '#botaoLer');
     botao.setAttribute('onclick', 'getText()');
-    botao.setAttribute('style', 'position: fixed;top: 40%;right: 1px; background: rgb(2,0,36); background: linear-gradient(90deg, rgba(20,152,191,1) 0%, rgba(0,95,162,1) 55%, rgba(0,74,152,1) 100%); color: white;border: 0px;border-radius: 10px;padding: 5px 10px;height: 37.8px;width: 37.8px;');
+    botao.setAttribute('style', 'position: fixed;top: 40%;right: 1px; background: rgb(2,0,36); background: linear-gradient(90deg, rgba(20,152,191,1) 0%, rgba(0,95,162,1) 55%, rgba(0,74,152,1) 100%); color: white;border: 0px;border-radius: 10px;padding: 5px 10px;height: 37.8px;width: 37.8px;z-index:999;');
 
     const imagem = document.createElement("img");
     imagem.setAttribute('src', 'https://assets.website-files.com/5f906e5e35f79f2a13828e8b/6066185582de651fb4ae4445_play-button-branco.png');
