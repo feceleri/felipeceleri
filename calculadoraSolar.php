@@ -1,6 +1,9 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $cep = $_POST['inputCEP'];
+
+include_once('simple_html_dom.php');
+
+function buscarCoordenadasCEP($cep)
+{
     $viaCep =  file_get_contents('https://viacep.com.br/ws/' . $cep . '/json/');
     $json = json_decode($viaCep);
     $place = str_replace(" ", "+", urlencode($json->logradouro)) . "+-+" . str_replace(" ", "+", urlencode($json->bairro)) . "," . urlencode($json->localidade) . "," . $cep;
@@ -18,70 +21,106 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     preg_match_all('/APP_INITIALIZATION_STATE=(.*?)"m"/s', $response, $location);
     $coordinates = $location[1][0];
     $coordinates = explode(",", str_replace('[[[', "", preg_replace('/]([\s\S\d]*)/', '', $coordinates)));
-
-    echo json_encode($coordinates);
-
-
-    // $url = "http://www.cresesb.cepel.br/index.php";
-    // $ch = curl_init($url);
-
-    // curl_setopt(
-    //     $ch,
-    //     CURLOPT_HTTPHEADER,
-    //     array(
-    //         'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    //         'Accept-Language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
-    //         'Cache-Control: max-age=0',
-    //         'Connection: keep-alive',
-    //         'Content-Type: application/x-www-form-urlencoded',
-    //         'Cookie: _ga=GA1.2.1006564176.1655149671; AdoptVisitorId=CwUwJgjAHMBsAMBaCIDGVHAIZQogRgExZiYDMhA7JTAJxlSqFA==; switchgroup1=none; AdoptConsent=N4Ig7gpgRgzglgFwgSQCIgFwgAwGYAc0UArAGwC0+AxgCbHkAsAZlQIbkCcLATORMdlZNu2UsQDsHXCAA0IAPYAHBMgB2AFVYBzGJgDaIVAC0AXmBMITAKQCeVWSACaDLRwAeAQQAyEAK42HXABZAEUqADkARisAaXFiBwArAA1fCABxAEcIRWIAJRAAXTklBAB5XwRNHX1CgF8gA===; _gid=GA1.2.2085603817.1655328023; switchgroup_news=0; _gat_gtag_UA_139329842_1=1',
-    //         'Origin: http://www.cresesb.cepel.br',
-    //         'Referer: http://www.cresesb.cepel.br/index.php',
-    //         'Upgrade-Insecure-Requests: 1',
-    //         'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
-    //     )
-    // );
-    // // curl_setopt($ch, CURLOPT_HEADER, false);
-    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+    return $coordinates;
+}
 
 
-    // $fields = array(
-    //     'latitude_dec' => '23.672282804231',
-    //     'latitude' => '-23.672282804231',
-    //     'hemi_lat' => '0',
-    //     'longitude_dec' => '46.66260761907',
-    //     'longitude' => '-46.66260761907',
-    //     'formato' => '1',
-    //     'lang' => 'pt',
-    //     'section' => 'sundata'
-    // );
+function buscarCoordenadasCEP2($cep)
+{
+    $link = "https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/utils/geocoder#q%3D" . $cep;
+    echo $link;
 
-    // curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+    $arrContextOptions = array(
+        "ssl" => array(
+            "verify_peer" => false,
+            "verify_peer_name" => false,
+        ),
+    );
+    $response = file_get_contents($link, false, stream_context_create($arrContextOptions));
+    // Create a DOM object
+    $html = new simple_html_dom();
+    // Load HTML from a string
+    $html->load($response);
+    $location = $html->find('p[class="result-location"]');
 
-
-
-    // $result  = curl_exec($ch);
-    // curl_close($ch);
-
-    // if($result){
-    //     echo $result;
-    // }
-
-    // // Further processing ...
-    // if ($result  == "OK") {
-    //     echo 'OK';
-    // } else {
-    //     echo "erro";
-    // }
+    var_dump($location[0]);
+    exit;
+    preg_match_all('/result-location(.*?)"m"/s', $response, $location);
+    $coordinates = $location[1][0];
+    $coordinates = explode(",", str_replace('[[[', "", preg_replace('/]([\s\S\d]*)/', '', $coordinates)));
+    return json_encode($coordinates);
+}
 
 
+function buscarMaiorMediaAnual($latitude, $longitude)
+{
+    $url = "http://www.cresesb.cepel.br/index.php";
+    $ch = curl_init($url);
 
+    curl_setopt(
+        $ch,
+        CURLOPT_HTTPHEADER,
+        array(
+            'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'Accept-Language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Cache-Control: max-age=0',
+            'Connection: keep-alive',
+            'Content-Type: application/x-www-form-urlencoded',
+            'Cookie: _ga=GA1.2.1006564176.1655149671; AdoptVisitorId=CwUwJgjAHMBsAMBaCIDGVHAIZQogRgExZiYDMhA7JTAJxlSqFA==; switchgroup1=none; AdoptConsent=N4Ig7gpgRgzglgFwgSQCIgFwgAwGYAc0UArAGwC0+AxgCbHkAsAZlQIbkCcLATORMdlZNu2UsQDsHXCAA0IAPYAHBMgB2AFVYBzGJgDaIVAC0AXmBMITAKQCeVWSACaDLRwAeAQQAyEAK42HXABZAEUqADkARisAaXFiBwArAA1fCABxAEcIRWIAJRAAXTklBAB5XwRNHX1CgF8gA===; _gid=GA1.2.2085603817.1655328023; switchgroup_news=0; _gat_gtag_UA_139329842_1=1',
+            'Origin: http://www.cresesb.cepel.br',
+            'Referer: http://www.cresesb.cepel.br/index.php',
+            'Upgrade-Insecure-Requests: 1',
+            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
+        )
+    );
+
+    $data = array(
+        'latitude_dec' => $latitude,
+        'latitude' => $latitude * -1,
+        'hemi_lat' => '0',
+        'longitude_dec' => $longitude,
+        'longitude' => $longitude * -1,
+        'formato' => '1',
+        'lang' => 'pt',
+        'section' => 'sundata'
+    );
+    $postData = "";
+    foreach ($data as $key => $val) {
+        $postData .= $key . "=" . $val . "&";
+    }
+    $postData = rtrim($postData, "&");
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+
+    $result  = curl_exec($ch);
+    curl_close($ch);
+
+    // Create a DOM object
+    $html = new simple_html_dom();
+    // Load HTML from a string
+    $html->load($result);
+
+    // echo $html;exit;
+
+    $tabela = $html->find('table[class="tb_sundata"]');
+    $linha = $tabela[0]->find('tr');
+    $celula = $linha[4]->find('td');
+    return $celula[15];
+}
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $cep = $_POST['inputCEP'];
+
+    $coordenadas = buscarCoordenadasCEP($cep);
+    $latitude = $coordenadas[2] * -1;
+    $longitude = $coordenadas[1] * -1;
+    echo buscarMaiorMediaAnual($latitude, $longitude);
     // echo "<a href='https://www.google.com/search?q=" . $coordinates[2] . "%2C" . $coordinates[1] . "' target='_blank'>" . $coordinates[2] . "," . $coordinates[1] . "</a>";
 } else {
-
-
-
     $page =  file_get_contents('https://www.greener.com.br/wp-json/wp/v2/pages/47809');
     $json = json_decode($page);
     preg_match_all('/class="jet-bar-chart-container" data-settings="{(.*?) data-tooltip/s', $json->content->rendered, $matches);
@@ -116,13 +155,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo date('M/Y', $maisRecente[0]);
     echo "<br>";
     echo  $maisRecente[1];
-
-
-    // echo "<a href='https://www.google.com/search?q=".$coordinates[2]."%2C".$coordinates[1]."' target='_blank'>".$coordinates[2].",".$coordinates[1]."</a>";
-
-
-
-
 
 ?>
     <!doctype html>
@@ -212,58 +244,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     "cep": $("#inputCEP").val()
                 };
                 if (postData) {
-                    
-                    jQuery.ajax({
-                        type: "POST",
-                        data: postData,
-                        success: function(data) {
-                            var latitude = data[2];
-                            var longitude = data[1];
 
-                            newData = {
-                                'latitude_dec': '23.672282804231',
-                                'latitude': '-23.672282804231',
-                                'hemi_lat': '0',
-                                'longitude_dec': '46.66260761907',
-                                'longitude': '-46.66260761907',
-                                'formato': '1',
-                                'lang': 'pt',
-                                'section': 'sundata'
-                            }
+                    // jQuery.ajax({
+                    //     type: "POST",
+                    //     data: postData,
+                    //     success: function(data) {
+                    //         var latitude = data[2];
+                    //         var longitude = data[1];
 
-                            fetch("http://www.cresesb.cepel.br/index.php", {
-  "headers": {
-    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-    "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-    "cache-control": "no-cache",
-    "content-type": "application/x-www-form-urlencoded",
-    "pragma": "no-cache",
-    "upgrade-insecure-requests": "1"
-  },
-  "referrer": "http://www.cresesb.cepel.br/index.php",
-  "referrerPolicy": "strict-origin-when-cross-origin",
-  "body": "latitude_dec=23.672282804231&latitude=-23.672282804231&hemi_lat=0&longitude_dec=46.66260761907&longitude=-46.66260761907&formato=1&lang=pt&section=sundata",
-  "method": "POST",
-  "mode": "cors",
-  "credentials": "include"
-})
-  .then(res => res.text())
-  .then(    $("#resultado").text(res))
+                    //         newData = {
+                    //             'latitude_dec': '23.672282804231',
+                    //             'latitude': '-23.672282804231',
+                    //             'hemi_lat': '0',
+                    //             'longitude_dec': '46.66260761907',
+                    //             'longitude': '-46.66260761907',
+                    //             'formato': '1',
+                    //             'lang': 'pt',
+                    //             'section': 'sundata'
+                    //         }
 
-
-                            // jQuery.ajax({
-                            //     type: "POST",
-                            //     url: 'http://www.cresesb.cepel.br/index.php',
-                            //     data: newData,
-                            //     beforeSend: function(request) {
-                            //         request.withCredentials = false;
-                            //     },
-                            //     success: function(data) {
-                            //         $("#resultado").text(data);
-                            //     }
-                            // });
-                        }
-                    });
+                    //         jQuery.ajax({
+                    //             type: "POST",
+                    //             url: 'http://www.cresesb.cepel.br/index.php',
+                    //             data: newData,
+                    //             beforeSend: function(request) {                                    
+                    //                 request.setRequestHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+                    //                 request.setRequestHeader("accept-language", "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7");
+                    //                 request.setRequestHeader("cache-control", "no-cache");
+                    //                 request.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                    //                 request.setRequestHeader("pragma", "no-cache");
+                    //                 request.setRequestHeader("upgrade-insecure-requests", "1");
+                    //                 request.withCredentials = false;
+                    //             },
+                    //             success: function(data) {
+                    //                 $("#resultado").text(data);
+                    //             }
+                    //         });
+                    //     }
+                    // });
                 }
             });
         </script>
