@@ -30,8 +30,8 @@ window.onload = function() {
 
     const body = document.body;
 
-    imagem.addEventListener('mouseenter', () => imagem.setAttribute('style', 'width:25px; vertical-align: text-bottom;'));
-    imagem.addEventListener('mouseleave', () => imagem.setAttribute('style', 'width:20px; vertical-align: text-bottom;margin-left:-5px;margin-bottom:-5px'));
+    imagem.addEventListener('mouseenter', () => imagem.setAttribute('style', 'width:25px; vertical-align: text-bottom;margin-left:-5px;margin-bottom:-5px'));
+    imagem.addEventListener('mouseleave', () => imagem.setAttribute('style', 'width:20px; vertical-align: text-bottom;'));
 
     botao.appendChild(imagem);
     body.appendChild(botao);
