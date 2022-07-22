@@ -22,16 +22,16 @@ window.onload = function() {
     const botao = document.createElement("button");
     botao.setAttribute('id', '#botaoLer');
     botao.setAttribute('onclick', 'getText()');
-    botao.setAttribute('style', 'position: fixed;top: 40%;right: 1px;    background: rgb(2,0,36);    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(18,18,159,1) 59%, rgba(50,103,158,1) 100%);    color: white;border: 0px;border-radius: 15px;padding: 5px 10px;   vertical-align: text-bottom;');
+    botao.setAttribute('style', 'position: fixed;top: 40%;right: 1px;    background: rgb(2,0,36);    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(18,18,159,1) 59%, rgba(50,103,158,1) 100%);    color: white;border: 0px;border-radius: 15px;padding: 5px 10px;');
 
     const imagem = document.createElement("img");
     imagem.setAttribute('src', 'https://assets.website-files.com/5f906e5e35f79f2a13828e8b/6066185582de651fb4ae4445_play-button-branco.png');
-    imagem.setAttribute('style', 'width:20px');
+    imagem.setAttribute('style', 'width:20px; vertical-align: text-bottom;');
 
     const body = document.body;
 
-    imagem.addEventListener('mouseenter', () => imagem.setAttribute('style', 'width:25px'));
-    imagem.addEventListener('mouseleave', () => imagem.setAttribute('style', 'width:20px'));
+    imagem.addEventListener('mouseenter', () => imagem.setAttribute('style', 'width:25px; vertical-align: text-bottom;'));
+    imagem.addEventListener('mouseleave', () => imagem.setAttribute('style', 'width:20px; vertical-align: text-bottom;'));
 
     botao.appendChild(imagem);
     body.appendChild(botao);
