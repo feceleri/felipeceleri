@@ -10,6 +10,8 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <script src="textReader.js"></script>
+    <link rel="stylesheet" href="darkmode.css">
+    <script src="darkmode.js"></script>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -23,6 +25,9 @@
 </head>
 
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
+
+    <button type="button" onclick="contraste()" style="position: absolute; top: 10px;right:10px;z-index: 2;"><i class="fa fa-adjust" aria-hidden="true"></i>
+    </button>
     <div class="conteudo">
         <div class="descricao">
             <svg class="img-fluid" id="outputsvg" xmlns="http://www.w3.org/2000/svg" style="" width="400" height="374" viewBox="0 0 4000 3740">
